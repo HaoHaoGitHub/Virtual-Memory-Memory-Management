@@ -1,6 +1,11 @@
 //
 //  main.cpp
 //  OpSys_p3
+//
+//  Created by Chelsey on 5/2/16.
+//  Copyright (c) 2016 Chelsey. All rights reserved.
+//
+
 
 #include <iostream>
 #include <map>
@@ -20,7 +25,7 @@ void print_event_map(const my_map& event_map) {
     for (my_map::const_iterator itr = event_map.begin(); itr != event_map.end(); ++itr) {
         cout << " | " << itr->first.time << " " << itr->first.proc.p_id << " " << itr->first.proc.p_mem
         << " | " << itr->second << " | " << endl;
-        cout << "----------------" << endl;
+        cout << "-------------" << endl;
     }
 }
 
@@ -33,7 +38,7 @@ void parse_a_line(string line, my_map& event_map){
     int i = 2;
     while (line[i] != ' ') mem_num += line[i++];
     Process tmp_p(symbol, stoi(mem_num));
-//    cout << "tmp_p is " << tmp_p.p_id << " " << tmp_p.p_mem << endl;
+    
     //continue parse the following time interval part
     i++;
     string tmp = "", start, end;
@@ -71,7 +76,6 @@ void read_file(ifstream &in_str, my_map& event_map) {
     assert(num <=26); // num of process is less than 26
     for (; num > 0; --num){
         getline(in_str, line);
-//        cout << "*" << line << endl;
         parse_a_line(line, event_map);
     }
 }
@@ -86,7 +90,7 @@ int main(int argc, const char * argv[]) {
     }
     read_file(in_str, event_map);
     print_event_map(event_map);
-    
+    //
     return 0;
 }
 

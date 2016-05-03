@@ -26,7 +26,7 @@ public:
 struct Comparer{
     bool operator()(const Proc_pair& pair1, const Proc_pair& pair2) const {
         return pair1.time < pair2.time ||
-        (pair1.time == pair2.time && pair1.proc.p_id < pair1.proc.p_id);
+        (pair1.time == pair2.time && pair1.proc.p_id < pair2.proc.p_id);
     }
 };
 

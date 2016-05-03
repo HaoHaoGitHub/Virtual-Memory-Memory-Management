@@ -1,11 +1,6 @@
 //
 //  main.cpp
 //  OpSys_p3
-//
-//  Created by Chelsey on 5/2/16.
-//  Copyright (c) 2016 Chelsey. All rights reserved.
-//
-
 
 #include <iostream>
 #include <map>

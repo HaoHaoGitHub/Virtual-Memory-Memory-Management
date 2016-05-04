@@ -23,6 +23,7 @@ public:
     Proc_pair(unsigned int t, Process p): time(t), proc(p){}
 };
 
+/* Operator for the map */
 struct Comparer{
     bool operator()(const Proc_pair& pair1, const Proc_pair& pair2) const {
         return pair1.time < pair2.time ||
@@ -30,6 +31,11 @@ struct Comparer{
     }
 };
 
-
-
 #endif
+
+
+
+
+
+
+

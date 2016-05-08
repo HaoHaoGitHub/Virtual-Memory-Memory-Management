@@ -1,4 +1,7 @@
 // Virtual Memory & Memory management 
+/* Compile as g++ main.cpp 
+   Run as ./a.out test.txt
+   Given input file name" test.txt */
 
 #include <iostream>
 #include <fstream>

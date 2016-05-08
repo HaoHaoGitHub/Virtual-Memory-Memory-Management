@@ -15,7 +15,6 @@ public:
     vector<char> mem;
     int num_used;
     int num_free;
-    char last_p_id;
     int last_index;       /* last used index          */
     mem_map index_map;    /* map with index as key    */
     mem_map space_map;    /* map with space as map    */
@@ -42,7 +41,7 @@ Memory::Memory() {
     for (unsigned int i = 0; i < 256; ++i) {
         mem.push_back('.');
     }
-    last_p_id = '?';
+
     last_index = 0;
     num_used = 0;
     num_free = 256;
@@ -351,6 +350,7 @@ void Memory::reset() {
     for (unsigned int i = 0; i < 256; ++i) {
         mem.push_back('.');
     }
+    last_index = 0;
     num_used = 0;
     num_free = 256;
     index_map.insert(make_pair(0,256));

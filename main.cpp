@@ -3,6 +3,7 @@
    Run as ./a.out test.txt
    Given input file name" test.txt */
 
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,9 +11,10 @@
 #include <string>
 #include <map>
 #include <stdio.h>
+#include <stdlib.h> 
 #include <assert.h>
 #include "pair.h"
-#include "memory.h"
+#include "Memory.h"
 using namespace std;
 
 # define t_memmove 1 /* time of moving each unit in defragmentation  */
@@ -36,7 +38,7 @@ void parse_a_line(string line, my_map& event_map){
     string mem_num = "";
     int i = 2;
     while (line[i] != ' ') mem_num += line[i++];
-    Process tmp_p(symbol, stoi(mem_num));
+    Process tmp_p(symbol, atoi(mem_num.c_str()));
 
     //continue parse the following time interval part
     i++;
@@ -45,13 +47,13 @@ void parse_a_line(string line, my_map& event_map){
         if (line[i] == '-') {
             start = tmp;
             // make a pair and insert to event_map
-            Proc_pair tmp_key(stoi(start), tmp_p);
+            Proc_pair tmp_key(atoi(start.c_str()), tmp_p);
             event_map.insert(make_pair(tmp_key, 0)); // 0 means start using memory, 1 means finish using memory
             tmp = "";
         } else if (line[i] == ' ') {
             end = tmp;
             // make a pair and insert to event_map
-            Proc_pair tmp_key(stoi(end), tmp_p);
+            Proc_pair tmp_key(atoi(end.c_str()), tmp_p);
             event_map.insert(make_pair(tmp_key, 1));
             tmp = "";
         } else {
@@ -59,7 +61,7 @@ void parse_a_line(string line, my_map& event_map){
             if (i == line.size() - 1) {
                 end = tmp;
                 // make a pair and insert to event_map
-                Proc_pair tmp_key(stoi(end), tmp_p);
+                Proc_pair tmp_key(atoi(end.c_str()), tmp_p);
                 event_map.insert(make_pair(tmp_key, 1));
             }
         }
@@ -71,7 +73,7 @@ void read_file(ifstream &in_str, my_map& event_map) {
     string line;
     unsigned int num;
     getline(in_str, line);
-    num = stoi(line);
+    num = atoi(line.c_str());
     assert(num <=26); // num of process is less than 26
     for (; num > 0; --num){
         getline(in_str, line);
@@ -204,12 +206,3 @@ int main(int argc, const char * argv[]) {
     start_simulate(event_map, memory, "Non-contiguous");
     return 0;
 }
-
-
-
-
-
-
-
-
-

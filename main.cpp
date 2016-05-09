@@ -17,6 +17,7 @@
 #include "Memory.h"
 #include <vector>
 #include "virtual_memory.h"
+#include "stdlib.h"
 #include <list>
 using namespace std;
 
@@ -242,12 +243,30 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
 void read_file_2(ifstream &in_str, vector<int> &page_reference, map<int,list<int> > &page_index)
 {
     int count = 0;
-    int tmp;
+    string tmp;
     while(in_str>>tmp)
     {
-        page_reference.push_back(tmp);
-        page_index[tmp].push_back(count);
-        count++;
+        bool wrong_input = false;
+        for(int i = 0 ; i < tmp.size(); i++)
+        {
+            if(!isdigit(tmp[i]))
+            {
+                wrong_input = true;
+                cerr<<"Wrong_input: "<<tmp<<endl;
+                break;
+            }
+        }
+        if(!wrong_input)
+        {
+            int a = atoi(tmp.c_str());
+            page_reference.push_back(a);
+            page_index[a].push_back(count);
+            count++;
+        }
+        else
+        {
+            break;
+        }
     }
 }
 
@@ -523,7 +542,10 @@ void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
 
 
 int main(int argc, const char * argv[]) {
-
+    if(argc != 3)
+    {
+        cerr<<"Using arguments: arg1 arg2 arg3"<<endl;
+    }
     my_map event_map; 
     ifstream in_str(argv[1]);
     if (!in_str.good()) {
@@ -543,6 +565,11 @@ int main(int argc, const char * argv[]) {
 
     //================================================Virtual Memory==================================
     ifstream in_str_2(argv[2]);
+    if(!in_str_2.good())
+    {
+        cerr << "Can't open " << argv[2] << "to read.\n";
+        exit(1);
+    }
     map<int, list<int> > page_index;
     vector<int> page_reference;
     read_file_2(in_str_2,page_reference,page_index);

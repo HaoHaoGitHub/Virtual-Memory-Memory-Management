@@ -4,6 +4,8 @@
    Given input file name" test.txt */
 
 
+//Teammate: Bing Yang, Hao Chen, Xu Chai.
+
 #include <iostream>
 #include <fstream>
 #include <sstream>

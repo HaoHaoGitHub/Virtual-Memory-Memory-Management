@@ -63,7 +63,7 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
             
             int tmp_occupy = min(num_space_left, itr->second);
             unsigned int index = itr->first; // start point of a placement
-            for (unsigned int i = 0; i < tmp_occupy; ++i) {
+            for (int i = 0; i < tmp_occupy; ++i) {
                 mem[index] = p_id;
                 ++index;
             }
@@ -88,7 +88,7 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
         for (mem_map::iterator itr = index_map.begin(); itr != index_map.end(); ++itr) {
             if (itr->second >= num_space) {
                 unsigned int index = itr->first;
-                for (unsigned int i = 0; i < num_space; ++i) {
+                for (int i = 0; i < num_space; ++i) {
                     mem[index] = p_id;
                     ++index;
                 }
@@ -146,7 +146,7 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
             do { // if there is enough place from the last index to the bottom
                 if (itr->second >= num_space) {
                     unsigned int index = itr->first;
-                    for (unsigned int i = 0; i < num_space; ++i) {
+                    for (int i = 0; i < num_space; ++i) {
                         mem[index] = p_id;
                         ++index;
                     }
@@ -171,7 +171,7 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
         for (mem_map::iterator itr = space_map.begin(); itr != space_map.end(); ++itr) {
             if (itr->first >= num_space) {
                 unsigned int index = itr->second;
-                for (unsigned int i = 0; i < num_space; ++i) {
+                for (int i = 0; i < num_space; ++i) {
                     mem[index] = p_id;
                     ++index;
                 }
@@ -267,13 +267,13 @@ void Memory::deallocate(const char& p_id, const int& num_space, const string& al
     
     // loop the char map to find the start index the process and deallocate
     map<int, pair<char, int> >::iterator itr = char_map.begin();
-    int tmp = 0;
+
     for (; itr != char_map.end();) {
         if (itr->second.first == p_id) {
             int s_index = itr->first;
             
             // change the related symbol from p_id to '.'
-            for (unsigned int i = s_index; i < s_index + itr->second.second; ++i) {
+            for (int i = s_index; i < s_index + itr->second.second; ++i) {
                 assert(mem[i] == p_id);
                 mem[i] = '.';
             }
@@ -297,7 +297,7 @@ int Memory::defragmentation(vector<char> &removed_chars) {
     // insert new status to new_map and move the symbol
     for (; itr != char_map.end(); ++itr) {
         new_map.insert(make_pair(index, itr->second));
-        for (unsigned int i = 0; i < itr->second.second; ++i) {
+        for (int i = 0; i < itr->second.second; ++i) {
             mem[index] = itr->second.first;
             ++index;
         }

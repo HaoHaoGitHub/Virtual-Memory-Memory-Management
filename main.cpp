@@ -4,7 +4,7 @@
    Given input file name" test.txt */
 
 
-//Teammate: Bing Yang, Hao Chen, Xu Chai.
+//Teammates: Bing Yang, Hao Chen, Xu Chai.
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +16,7 @@
 #include <stdlib.h> 
 #include <assert.h>
 #include "pair.h"
-#include "Memory.h"
+#include "memory.h"
 #include <vector>
 #include "virtual_memory.h"
 #include "stdlib.h"
@@ -24,6 +24,8 @@
 using namespace std;
 
 # define t_memmove 1 /* time of moving each unit in defragmentation  */
+# define INT_MAX 2137483647 
+
 typedef map<Proc_pair, int, Comparer> my_map; /* <[time_value, (process_id, memory units needed)], event_type> */
 int final_t;
 
@@ -50,7 +52,7 @@ void error_handler(){
     exit(1);
 }
 
-void skip_blanks(int& i, const string& str) {
+void skip_blanks(unsigned int& i, const string& str) {
 
     for (; i < str.size(); ++i) {
         if(str[i] == ' ' || str[i] == '\t') 
@@ -77,7 +79,7 @@ void parse_a_line(string line, my_map& event_map){
     }
 
     // get the number of memory required of each process and make a process object
-    int i = 1;
+    unsigned int i = 1;
     skip_blanks(i, line);
 
     string mem_num = "";
@@ -246,10 +248,10 @@ void read_file_2(ifstream &in_str, vector<int> &page_reference, map<int,list<int
 {
     int count = 0;
     string tmp;
-    while(in_str>>tmp)
+    while(in_str >> tmp)
     {
         bool wrong_input = false;
-        for(int i = 0 ; i < tmp.size(); i++)
+        for(unsigned int i = 0 ; i < tmp.size(); i++)
         {
             if(!isdigit(tmp[i]))
             {
@@ -302,7 +304,7 @@ void OPT(vector<int> page_reference, map<int,list<int> > page_index, Virtual_mem
 {
     int count_fault = 0;
     cout<<"Simulating OPT with fixed frame size of "<<F<<endl;
-    for(int i = 0; i < page_reference.size();i++)
+    for(unsigned int i = 0; i < page_reference.size();i++)
     {
         bool is_find = false;
         for(int l = 0 ; l < F;l++)
@@ -399,7 +401,7 @@ void LRU(vector<int> page_reference, Virtual_memory virtual_memory)
 
     int count_fault = 0;
     cout<<"Simulating LRU with fixed frame size of "<<F<<endl;
-    for(int i = 0; i < page_reference.size();i++)
+    for(unsigned int i = 0; i < page_reference.size();i++)
     {
         bool is_find = false;
         for(int l = 0 ; l < F;l++)
@@ -469,7 +471,7 @@ void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
     int count_fault = 0;
     cout<<"Simulating LFU with fixed frame size of 3"<<endl;
     map<int, int> page_times;
-    for(int i = 0; i < page_reference.size();i++)
+    for(unsigned int i = 0; i < page_reference.size();i++)
     {
         bool is_find = false;
         for(int l = 0 ; l < F;l++)
@@ -501,6 +503,7 @@ void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
             }
             else
             {
+
                 int replace_page = INT_MAX;
                 int replace_page_index = INT_MAX;
                 int replace_page_times = INT_MAX;

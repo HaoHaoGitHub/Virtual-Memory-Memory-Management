@@ -65,6 +65,14 @@ void parse_a_line(string line, my_map& event_map){
     if (!isupper(symbol)) {
         error_handler();
     }
+    // check the uniqueness of the process id
+    map<char, int> p_id_map;
+    pair< map<char, int>::iterator, bool> check_dup;
+    check_dup= p_id_map.insert(make_pair(symbol, 1));
+    if (check_dup.second == false) {
+        error_handler();
+    }
+
     // get the number of memory required of each process and make a process object
     int i = 1;
     skip_blanks(i, line);
@@ -86,7 +94,7 @@ void parse_a_line(string line, my_map& event_map){
             Proc_pair tmp_key(atoi(start.c_str()), tmp_p);
             event_map.insert(make_pair(tmp_key, 0)); // 0 means start using memory, 1 means finish using memory
             tmp = "";
-        } else if (line[i] == ' ') {
+        } else if (line[i] == ' ' || line[i] == '\t') {
             if(line[i + 1] == ' ' || line[i + 1] == '\t') continue;
             else {
                 end = tmp;

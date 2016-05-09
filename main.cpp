@@ -33,18 +33,51 @@ void print_event_map(const my_map& event_map) {
     }
 }
 
+/* Useful helper functions. */
+bool is_digit(const string& str) {
+    for(unsigned int i = 0; i < str.size(); ++i) {
+        if (!isdigit(str[i])) 
+            return false;
+    }
+    return true;
+}
+
+void error_handler(){
+    cout << "Error: Invalid input content!" << endl;
+    exit(1);
+}
+
+void skip_blanks(int& i, const string& str) {
+
+    for (; i < str.size(); ++i) {
+        if(str[i] == ' ' || str[i] == '\t') 
+            continue;
+        else 
+            break;
+    }
+}
+
 /* parse each line of input and build the event_map */
 void parse_a_line(string line, my_map& event_map){
     
-    //get the process_id and the number of memory needed, then make a process
+    // get the process_id
     char symbol = line[0];
+    if (!isupper(symbol)) {
+        error_handler();
+    }
+    // get the number of memory required of each process and make a process object
+    int i = 1;
+    skip_blanks(i, line);
+
     string mem_num = "";
-    int i = 2;
     while (line[i] != ' ') mem_num += line[i++];
+    if (!is_digit(mem_num)) {
+        error_handler();
+    }
     Process tmp_p(symbol, atoi(mem_num.c_str()));
 
-    //continue parse the following time interval part
-    i++;
+    // continue parse the following time interval part
+    skip_blanks(i, line);
     string tmp = "", start, end;
     for (; i < line.size(); ++i) {
         if (line[i] == '-') {
@@ -54,11 +87,14 @@ void parse_a_line(string line, my_map& event_map){
             event_map.insert(make_pair(tmp_key, 0)); // 0 means start using memory, 1 means finish using memory
             tmp = "";
         } else if (line[i] == ' ') {
-            end = tmp;
-            // make a pair and insert to event_map
-            Proc_pair tmp_key(atoi(end.c_str()), tmp_p);
-            event_map.insert(make_pair(tmp_key, 1));
-            tmp = "";
+            if(line[i + 1] == ' ' || line[i + 1] == '\t') continue;
+            else {
+                end = tmp;
+                // make a pair and insert to event_map
+                Proc_pair tmp_key(atoi(end.c_str()), tmp_p);
+                event_map.insert(make_pair(tmp_key, 1));
+                tmp = "";
+            }
         } else {
             tmp += line[i];
             if (i == line.size() - 1) {
@@ -76,13 +112,20 @@ void read_file(ifstream &in_str, my_map& event_map) {
     string line;
     unsigned int num;
     getline(in_str, line);
+    // check validity of the first line of input
+    if (!is_digit(line)) {
+        error_handler();
+    }
     num = atoi(line.c_str());
-    assert(num <=26); // num of process is less than 26
-    for (; num > 0; --num){
+    if (num > 26) {
+        error_handler();
+    }
+    for (; num > 0 && !in_str.eof(); --num){
         getline(in_str, line);
         parse_a_line(line, event_map);
     }
 }
+
 /* simulate each algorithm */
 void start_simulate(my_map event_map, Memory memory, const string& alg) {
     // reset

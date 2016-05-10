@@ -192,7 +192,7 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
                 if (memory.allocate(p_id, mem_num, alg) == false) {
 
                     cout << "time " << tmp_t << "ms: Cannot place process " << p_id << 
-                        " -- starting defragmentation " << endl;
+                        " -- starting defragmentation" << endl;
 
                     vector<char>removed_chars;
                     int num_move = memory.defragmentation(removed_chars);
@@ -201,9 +201,9 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
                     
                     cout << "time " << new_time << "ms: Defragmentation complete (moved " << num_move
                          << " frames:";
-                    for (unsigned int i = 0; i < removed_chars.size(); ++i) 
-                        cout << " " << removed_chars[i];
-                    cout << ")" << endl;
+                    for (unsigned int i = 0; i < removed_chars.size() - 1; ++i) 
+                        cout << " "<< removed_chars[i] << ",";
+                    cout << " " << removed_chars[removed_chars.size() - 1] << ")" << endl;
                     memory.print();
 
                     // place the process which triggered the defragmentation

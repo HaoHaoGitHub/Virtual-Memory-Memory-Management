@@ -20,11 +20,12 @@
 #include <vector>
 #include "virtual_memory.h"
 #include "stdlib.h"
+#include <climits>
 #include <list>
 using namespace std;
 
 # define t_memmove 1 /* time of moving each unit in defragmentation  */
-# define INT_MAX 2137483647 
+
 
 typedef map<Proc_pair, int, Comparer> my_map; /* <[time_value, (process_id, memory units needed)], event_type> */
 int final_t;

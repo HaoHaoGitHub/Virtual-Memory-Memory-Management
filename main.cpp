@@ -242,7 +242,7 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
     }
     cout << "time " << final_t << "ms: Simulator ended (";
     if(alg != "Non-contiguous") cout << "Contiguous -- ";
-    cout << alg << ")\n\n" << endl;
+    cout << alg << ")\n" << endl;
 }
 //================================================Virtual Memory==================================
 void read_file_2(ifstream &in_str, vector<int> &page_reference, map<int,list<int> > &page_index)

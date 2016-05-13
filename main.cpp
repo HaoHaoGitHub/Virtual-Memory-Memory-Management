@@ -542,7 +542,6 @@ void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
         }
     }
     cout<<"End of LFU simulation ("<<count_fault<<" page faults)"<<endl;
-    cout<<endl;
 }
 //================================================Virtual Memory==================================
 

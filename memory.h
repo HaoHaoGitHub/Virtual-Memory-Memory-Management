@@ -58,7 +58,8 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
         mem_map::iterator itr = index_map.begin();
         int num_space_left = num_space;
         
-        // continuously occupy the memory from the first start_index until all space needed are occupied
+        // continuously occupy the memory from the first start_index 
+        // until all space needed are occupied
         for (; itr != index_map.end() && num_space_left != 0;) {
             
             int tmp_occupy = min(num_space_left, itr->second);
@@ -67,8 +68,8 @@ bool Memory::allocate(const char& p_id, const int& num_space, const string& alg)
                 mem[index] = p_id;
                 ++index;
             }
-            
-            if (tmp_occupy == itr->second) { // if the space needed is larger than current interval
+            // if the space needed is larger than current interval
+            if (tmp_occupy == itr->second) { 
                 char_map.insert(make_pair(itr->first, make_pair(p_id, itr->second)));
             } else { // if the space needed is smaller than current interval
                 index_map.insert(make_pair(itr->first + tmp_occupy, itr->second - tmp_occupy));
@@ -258,7 +259,8 @@ void Memory::set_partition(const int& s_index, const int& num_space, const strin
         new_index = s_index;
         new_space = num_space;
     }
-    if (alg == "First-Fit" || alg == "Next-Fit"|| alg == "Non-contiguous") map_p->insert(make_pair(new_index, new_space));
+    if (alg == "First-Fit" || alg == "Next-Fit"|| alg == "Non-contiguous") 
+        map_p->insert(make_pair(new_index, new_space));
     else if (alg == "Best-Fit") map_p->insert(make_pair(new_space, new_index));
 }
 
@@ -278,7 +280,8 @@ void Memory::deallocate(const char& p_id, const int& num_space, const string& al
                 mem[i] = '.';
             }
             /* update index_map or space_map and combine partitions if necessary  */
-            if(alg == "Next-Fit") last_index = s_index + itr->second.second;// update the last_index
+            // update the last_index
+            if(alg == "Next-Fit") last_index = s_index + itr->second.second;
             set_partition(s_index, itr->second.second, alg);
             char_map.erase(itr++);
         }
@@ -375,7 +378,9 @@ void Memory::print_s_map() {
 }
 /* print char map */
 void Memory::print_char_map() {
-    for (map<int, pair<char, int> >::iterator itr = char_map.begin(); itr != char_map.end(); ++itr) {
-        cout << "<" << itr->first << " " << "<" << itr->second.first << " , " << itr->second.second << "> >" << endl;
+    for (map<int, pair<char, int> >::iterator itr = char_map.begin(); 
+        itr != char_map.end(); ++itr) {
+        cout << "<" << itr->first << " " << "<" << itr->second.first << " , " 
+             << itr->second.second << "> >" << endl;
     }
 }

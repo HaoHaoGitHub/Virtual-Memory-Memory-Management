@@ -26,15 +26,16 @@ using namespace std;
 
 # define t_memmove 1 /* time of moving each unit in defragmentation  */
 
-
-typedef map<Proc_pair, int, Comparer> my_map; /* <[time_value, (process_id, memory units needed)], event_type> */
+/* <[time_value, (process_id, memory units needed)], event_type> */
+typedef map<Proc_pair, int, Comparer> my_map; 
 int final_t;
 
 /* helper function for debugging */
 void print_event_map(const my_map& event_map) {
     for (my_map::const_iterator itr = event_map.begin(); itr != event_map.end(); ++itr) {
-        cout << " | " << itr->first.time << " " << itr->first.proc.p_id << " " << itr->first.proc.p_mem
-        << " | " << itr->second << " | " << endl;
+        cout << " | " << itr->first.time << " " 
+            << itr->first.proc.p_id << " " << itr->first.proc.p_mem
+            << " | " << itr->second << " | " << endl;
         cout << "-------------" << endl;
     }
 }
@@ -98,7 +99,8 @@ void parse_a_line(string line, my_map& event_map){
             start = tmp;
             // make a pair and insert to event_map
             Proc_pair tmp_key(atoi(start.c_str()), tmp_p);
-            event_map.insert(make_pair(tmp_key, 0)); // 0 means start using memory, 1 means finish using memory
+            // 0 means start using memory, 1 means finish using memory
+            event_map.insert(make_pair(tmp_key, 0)); 
             tmp = "";
         } else if (line[i] == ' ' || line[i] == '\t') {
             if(line[i + 1] == ' ' || line[i + 1] == '\t') continue;
@@ -177,7 +179,8 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
                     " -- skipping process " << p_id << endl;  
                 memory.print();
 
-                // Erase this process record from event_map (including both arriving and leaving one):
+                // Erase this process record from event_map 
+                // (including both arriving and leaving one):
                 my_map::iterator tmp_itr = itr;
                 tmp_itr++;
                 for (; tmp_itr != event_map.end();) {
@@ -200,15 +203,16 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
                     int time_move = num_move * t_memmove;
                     int new_time = tmp_t + num_move * t_memmove;;
                     
-                    cout << "time " << new_time << "ms: Defragmentation complete (moved " << num_move
-                         << " frames:";
+                    cout << "time " << new_time << "ms: Defragmentation complete (moved " 
+                        << num_move << " frames:";
                     for (unsigned int i = 0; i < removed_chars.size() - 1; ++i) 
                         cout << " "<< removed_chars[i] << ",";
                     cout << " " << removed_chars[removed_chars.size() - 1] << ")" << endl;
                     memory.print();
 
                     // place the process which triggered the defragmentation
-                    cout << "time " << new_time << "ms: Placed process " << p_id << " in memory:" << endl;
+                    cout << "time " << new_time << "ms: Placed process " << p_id 
+                         << " in memory:" << endl;
                     memory.allocate(p_id, mem_num, alg);
                     memory.print();
 
@@ -228,14 +232,16 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
                 } 
                 // if allocate successfully
                 else { 
-                    cout << "time " << tmp_t << "ms: Placed process " << p_id << " in memory:" << endl;
+                    cout << "time " << tmp_t << "ms: Placed process " << p_id 
+                         << " in memory:" << endl;
                     memory.print();
                 }
             }
         } 
         // if event type is 1, remove memory
         else { 
-            cout << "time " << tmp_t << "ms: Process " << p_id << " removed from physical memory" << endl;
+            cout << "time " << tmp_t << "ms: Process " << p_id 
+                 << " removed from physical memory" << endl;
             memory.deallocate(p_id, mem_num, alg);
             memory.print();
         }
@@ -244,8 +250,9 @@ void start_simulate(my_map event_map, Memory memory, const string& alg) {
     if(alg != "Non-contiguous") cout << "Contiguous -- ";
     cout << alg << ")\n" << endl;
 }
-//================================================Virtual Memory==================================
-void read_file_2(ifstream &in_str, vector<int> &page_reference, map<int,list<int> > &page_index)
+//===============================Virtual Memory============================
+void read_file_2(ifstream &in_str, vector<int> &page_reference, 
+                 map<int,list<int> > &page_index)
 {
     int count = 0;
     string tmp;
@@ -300,8 +307,9 @@ void print_frame( int frame[])
     cout<<"]";
 }
 
-//------------------------------------------------OPT replacement algo----------------------------
-void OPT(vector<int> page_reference, map<int,list<int> > page_index, Virtual_memory virtual_memory)
+//----------------------------OPT replacement algo----------------------------
+void OPT(vector<int> page_reference, map<int,list<int> > page_index, 
+         Virtual_memory virtual_memory)
 {
     int count_fault = 0;
     cout<<"Simulating OPT with fixed frame size of "<<F<<endl;
@@ -396,7 +404,7 @@ void OPT(vector<int> page_reference, map<int,list<int> > page_index, Virtual_mem
     cout<<"End of OPT simulation ("<<count_fault<<" page faults)"<<endl;
     cout<<endl;
 }
-//------------------------------------------------LRU replacement algo----------------------------
+//---------------------------LRU replacement algo----------------------------
 void LRU(vector<int> page_reference, Virtual_memory virtual_memory)
 {
 
@@ -466,7 +474,7 @@ void LRU(vector<int> page_reference, Virtual_memory virtual_memory)
     cout<<"End of LRU simulation ("<<count_fault<<" page faults)"<<endl;
     cout<<endl;
 }
-//------------------------------------------------LFU replacement algo----------------------------
+//-----------------------------LFU replacement algo----------------------------
 void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
 {
     int count_fault = 0;
@@ -543,7 +551,7 @@ void LFU(vector<int> page_reference, Virtual_memory virtual_memory)
     }
     cout<<"End of LFU simulation ("<<count_fault<<" page faults)"<<endl;
 }
-//================================================Virtual Memory==================================
+//=========================Virtual Memory=======================
 
 
 int main(int argc, const char * argv[]) {
@@ -568,7 +576,7 @@ int main(int argc, const char * argv[]) {
     start_simulate(event_map, memory, "Best-Fit");
     start_simulate(event_map, memory, "Non-contiguous");
 
-    //================================================Virtual Memory==================================
+    //======================Virtual Memory=========================
     ifstream in_str_2(argv[2]);
     if(!in_str_2.good())
     {
